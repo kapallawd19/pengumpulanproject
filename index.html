@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengumpulan Progres Proyek Informatika</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- TAHAP 1: ARENA JALAN KARAKTER -->
+    <div id="walkStage" class="stage active">
+      <div class="sky">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+      </div>
+
+      <div class="construction-site">
+        <div class="scaffold"></div>
+        <div class="crane"></div>
+        <div class="building-frame"></div>
+      </div>
+
+      <div class="sign-board">
+        <h2>POS LAPORAN PROGRES PROYEK</h2>
+        <p>Tekan <b>SPASI</b> atau tombol di bawah untuk berjalan ke pintu</p>
+      </div>
+
+      <div class="ground">
+        <div class="door-container">
+          <div class="door-frame">
+            <div class="door-sign">RUANG LAPORAN</div>
+            <div class="door">
+              <div class="door-knob"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="builderChar" class="builder">
+          <div class="speech-bubble" id="speechBubble">Ayo maju ke pintu!</div>
+          <div class="hard-hat"></div>
+          <div class="head">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="smile"></div>
+          </div>
+          <div class="body">
+            <div class="vest"></div>
+            <div class="tool-belt">
+              <div class="tool hammer"></div>
+              <div class="tool wrench"></div>
+            </div>
+          </div>
+          <div class="legs">
+            <div class="leg left-leg"></div>
+            <div class="leg right-leg"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls-hint">
+        <button id="btnStep" class="btn-step">Langkah Maju (Spasi)</button>
+      </div>
+    </div>
+
+    <!-- TAHAP 2: FORMULIR PROGRES TEMA KERTAS -->
+    <div id="formStage" class="stage">
+      <div class="paper-container">
+        <div class="paper-clip"></div>
+        <h2 class="form-title">LEMBAR LAPORAN PROGRES PROYEK</h2>
+        <p class="form-subtitle">
+          Lengkapi identitas dan bukti progres karya kamu di bawah ini.
+        </p>
+
+        <form id="progressForm">
+          <div class="form-group">
+            <label for="studentName">Nama Lengkap</label>
+            <input
+              type="text"
+              id="studentName"
+              required
+              placeholder="Ketik nama lengkapmu..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="studentClass">Kelas</label>
+            <select id="studentClass" required>
+              <option value="" disabled selected>-- Pilih Kelas --</option>
+              <!-- Kelas 7 -->
+              <option value="7-1">Kelas 7-1</option>
+              <option value="7-2">Kelas 7-2</option>
+              <option value="7-3">Kelas 7-3</option>
+              <option value="7-4">Kelas 7-4</option>
+              <option value="7-5">Kelas 7-5</option>
+              <option value="7-6">Kelas 7-6</option>
+              <!-- Kelas 8 -->
+              <option value="8-1">Kelas 8-1</option>
+              <option value="8-2">Kelas 8-2</option>
+              <option value="8-3">Kelas 8-3</option>
+              <option value="8-4">Kelas 8-4</option>
+              <option value="8-5">Kelas 8-5</option>
+              <option value="8-6">Kelas 8-6</option>
+              <!-- Kelas 9 -->
+              <option value="9-1">Kelas 9-1</option>
+              <option value="9-2">Kelas 9-2</option>
+              <option value="9-3">Kelas 9-3</option>
+              <option value="9-4">Kelas 9-4</option>
+              <option value="9-5">Kelas 9-5</option>
+              <option value="9-6">Kelas 9-6</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="projectTitle">Judul / Nama Proyek</label>
+            <input
+              type="text"
+              id="projectTitle"
+              required
+              placeholder="Contoh: Aplikasi Galeri Foto / Web Profil"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="projectLink" id="linkFieldLabel">Link Proyek</label>
+            <input
+              type="url"
+              id="projectLink"
+              placeholder="https://gallery.appinventor.mit.edu/..."
+            />
+            <small id="linkHelpText" class="help-text"
+              >Pilih kelas terlebih dahulu.</small
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="projectFile" id="fileFieldLabel"
+              >Upload Bukti Progres (Gambar)</label
+            >
+            <input
+              type="file"
+              id="projectFile"
+              accept="image/*"
+              multiple
+              required
+            />
+            <small id="fileHelpText" class="help-text"
+              >Bisa memilih lebih dari 1 gambar sekaligus.</small
+            >
+            <div id="filePreview" class="file-preview"></div>
+          </div>
+
+          <button type="submit" class="btn-submit">Kirim Laporan</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAHAP 3: LAYAR SELESAI -->
+    <div id="endStage" class="stage">
+      <div class="sunset-sky">
+        <div class="sun"></div>
+      </div>
+
+      <div class="end-content">
+        <h1 class="thank-you-text">
+          Terimakasih telah mengerjakan progres untuk hari ini!
+        </h1>
+        <p class="sub-thank-you">
+          Progres karya kamu sudah terverifikasi dan dicatat. Sampai jumpa di
+          pertemuan berikutnya!
+        </p>
+
+        <div class="builder-thumb-container">
+          <div class="builder thumb-pose">
+            <div class="hard-hat"></div>
+            <div class="head">
+              <div class="eye left"></div>
+              <div class="eye right"></div>
+              <div class="smile big-smile"></div>
+            </div>
+            <div class="body">
+              <div class="vest"></div>
+              <div class="tool-belt">
+                <div class="tool hammer"></div>
+                <div class="tool wrench"></div>
+              </div>
+              <div class="hand-thumbs-up">👍</div>
+            </div>
+            <div class="legs">
+              <div class="leg left-leg"></div>
+              <div class="leg right-leg"></div>
+            </div>
+          </div>
+        </div>
+
+        <button id="btnReset" class="btn-reset">Kirim Laporan Lain</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
