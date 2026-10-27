@@ -20,7 +20,8 @@ const fileHelpText = document.getElementById("fileHelpText");
 const projectFileInput = document.getElementById("projectFile");
 const filePreview = document.getElementById("filePreview");
 
-const APPS_SCRIPT_URL = "TEMPEL_URL_GOOGLE_APPS_SCRIPT_KAMU_DI_SINI";
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbytB5KUcDXXX_usI5BrybNVu8JVdWI-aavP50hMsk52XexhobR2HQSHUAS6LO9BzaSu/exec";
 
 function moveForward() {
   if (currentStep < totalSteps) {
@@ -106,7 +107,7 @@ projectFileInput.addEventListener("change", (e) => {
   });
 });
 
-progressForm.addEventListener("submit", (e) => {
+progressForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const selectedClass = studentClassSelect.value;
@@ -120,36 +121,57 @@ progressForm.addEventListener("submit", (e) => {
   }
 
   const submitBtn = progressForm.querySelector(".btn-submit");
-  submitBtn.innerText = "Mengirim...";
+  submitBtn.innerText = "Memproses & Mengirim Foto...";
   submitBtn.disabled = true;
 
-  const formData = {
-    name: document.getElementById("studentName").value,
-    studentClass: selectedClass,
-    projectTitle: document.getElementById("projectTitle").value,
-    projectLink: projectLinkInput.value || "-",
-  };
-
-  fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  })
-    .then(() => {
-      submitBtn.innerText = "Kirim Laporan";
-      submitBtn.disabled = false;
-
-      formStage.classList.remove("active");
-      endStage.classList.add("active");
-    })
-    .catch((err) => {
-      alert("Gagal mengirim laporan. Coba lagi ya!");
-      submitBtn.innerText = "Kirim Laporan";
-      submitBtn.disabled = false;
+  // Membaca file gambar dan mengonversi ke Base64
+  const filePromises = Array.from(files).map((file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result.split(",")[1];
+        resolve({
+          base64: base64,
+          mimeType: file.type,
+        });
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
+  });
+
+  try {
+    const fileDataList = await Promise.all(filePromises);
+
+    const formData = {
+      name: document.getElementById("studentName").value,
+      studentClass: selectedClass,
+      projectTitle: document.getElementById("projectTitle").value,
+      projectLink: projectLinkInput.value || "-",
+      files: fileDataList,
+    };
+
+    await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    submitBtn.innerText = "Kirim Laporan";
+    submitBtn.disabled = false;
+
+    formStage.classList.remove("active");
+    endStage.classList.add("active");
+  } catch (err) {
+    alert(
+      "Gagal mengirim laporan. Coba pastikan koneksi internet stabil lalu coba lagi ya!",
+    );
+    submitBtn.innerText = "Kirim Laporan";
+    submitBtn.disabled = false;
+  }
 });
 
 btnReset.addEventListener("click", () => {
